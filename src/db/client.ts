@@ -1,17 +1,10 @@
 import { PrismaClient } from '@prisma/client';
+//www.prisma.io/docs/guides/database/troubleshooting-orm/help-articles/nextjs-prisma-client-dev-practices
 
-const prisma = new PrismaClient();
-
-async function main() {
-  // ... you will write your Prisma Client queries here
+declare global {
+  var prisma: PrismaClient | undefined;
 }
 
-main()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
-  .catch(async (e) => {
-    console.error(e);
-    await prisma.$disconnect();
-    process.exit(1);
-  });
+export const prisma = global.prisma || new PrismaClient({ log: ['query'] });
+
+if (process.env.NODE_ENV !== 'production') global.prisma = prisma;
