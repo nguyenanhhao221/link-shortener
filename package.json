@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db": "pscale connect link-short main"
   },
   "dependencies": {
     "@tanstack/react-query": "^4.13.0",
