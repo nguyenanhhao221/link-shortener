@@ -2,7 +2,7 @@ import { httpBatchLink } from '@trpc/client';
 import { createTRPCNext } from '@trpc/next';
 import type { AppRouter } from '../server/routers/_app';
 
-function getBaseUrl() {
+export function getBaseUrl() {
     if (typeof window !== 'undefined')
         // browser should use relative path
         return '';
@@ -31,7 +31,9 @@ export const trpc = createTRPCNext<AppRouter>({
             /**
              * @link https://tanstack.com/query/v4/docs/reference/QueryClient
              **/
-            // queryClientConfig: { defaultOptions: { queries: { staleTime: 60 } } },
+            queryClientConfig: {
+                defaultOptions: { queries: { refetchOnWindowFocus: false } },
+            },
         };
     },
     /**

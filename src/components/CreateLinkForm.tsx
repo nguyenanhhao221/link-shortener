@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import { z } from 'zod';
 import { getRandom } from '../utils/helper';
 import { trpc } from '../utils/trpc';
 import { LoadingButton } from './LoadingButton';
+import { ShortLinkDisplay } from './ShortLinkDisplay';
 
 export const inputType = z.string().url();
 
@@ -14,14 +15,13 @@ type From = {
 export const CreateLinkForm = () => {
     const [input, setInput] = useState<From>({ url: '', slug: '' });
     const createShortLink = trpc.createShortLink.useMutation();
-    const getShortLink = trpc.getShotLinks.useQuery();
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const inputValue = inputType.parse(input.url);
         if (inputValue) {
             const randomSlug = getRandom();
-            const response = createShortLink.mutate({
+            return createShortLink.mutate({
                 ...input,
                 slug: randomSlug,
             });
@@ -30,9 +30,9 @@ export const CreateLinkForm = () => {
 
     return (
         <main className="grid h-screen w-screen place-content-center bg-slate-900">
-            <div className="w-[90vw]">
+            <div className="flex w-[90vw] flex-col items-center gap-4">
                 <form
-                    className="flex flex-col items-center gap-4"
+                    className="flex w-full flex-col items-center gap-4"
                     onSubmit={(e) => handleSubmit(e)}
                 >
                     <input
@@ -58,6 +58,15 @@ export const CreateLinkForm = () => {
                     />
                     {createShortLink.isLoading && <LoadingButton />}
                 </form>
+                <Suspense fallback={<div>Loading...</div>}>
+                    <ShortLinkDisplay
+                        shortLink={
+                            createShortLink.data?.slug
+                                ? createShortLink.data.slug
+                                : undefined
+                        }
+                    />
+                </Suspense>
             </div>
         </main>
     );
