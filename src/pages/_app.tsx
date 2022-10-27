@@ -1,33 +1,19 @@
 import '../styles/globals.css';
-import type { AppProps } from 'next/app';
+import type { AppType } from 'next/app';
 import Head from 'next/head';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import {
-    Hydrate,
-    QueryClient,
-    QueryClientProvider,
-    DehydratedState,
-} from '@tanstack/react-query';
-import { useState } from 'react';
+import { trpc } from '../utils/trpc';
 
-function MyApp({
-    Component,
-    pageProps,
-}: AppProps<{ dehydratedState: DehydratedState }>) {
-    const [queryClient] = useState(() => new QueryClient());
+const MyApp: AppType = ({ Component, pageProps }) => {
     return (
         <>
             <Head>
                 <title>Link Lee - Shorten Link</title>
             </Head>
-            <QueryClientProvider client={queryClient}>
-                <Hydrate state={pageProps.dehydratedState}>
-                    <ReactQueryDevtools initialIsOpen={false} />
-                    <Component {...pageProps} />
-                </Hydrate>
-            </QueryClientProvider>
+            <ReactQueryDevtools initialIsOpen={false} />
+            <Component {...pageProps} />
         </>
     );
-}
+};
 
-export default MyApp;
+export default trpc.withTRPC(MyApp);
