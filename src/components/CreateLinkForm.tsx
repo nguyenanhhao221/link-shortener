@@ -27,7 +27,12 @@ export const CreateLinkForm = () => {
             });
         }
     };
-
+    //useCallback to add focus state to the input when component first mount
+    //Can also use useEffect combine with useRef here but I don't want to deal with useEffect
+    const urlInput = useCallback(
+        (element: HTMLInputElement) => (element ? element.focus() : null),
+        []
+    );
     return (
         <main className="grid h-screen w-screen place-content-center bg-slate-900">
             <div className="flex w-[90vw] flex-col items-center gap-4">
@@ -38,7 +43,7 @@ export const CreateLinkForm = () => {
                     <input
                         className="form-input w-full rounded-lg"
                         placeholder="Enter Link"
-                        type={'url'}
+                        ref={urlInput}
                         value={input.url}
                         onChange={(e) =>
                             setInput({ ...input, url: e.target.value })
