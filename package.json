@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db": "pscale connect link-short main"
+    "db": "pscale connect link-short dev --port 3306"
   },
   "dependencies": {
     "@tanstack/react-query": "^4.13.0",
@@ -16,9 +16,7 @@
     "@trpc/next": "10.0.0-proxy-beta.26",
     "@trpc/react-query": "10.0.0-proxy-beta.26",
     "@trpc/server": "10.0.0-proxy-beta.26",
-    "axios": "^1.1.3",
     "copy-to-clipboard": "^3.3.2",
-    "lodash": "^4.17.21",
     "nanoid": "^4.0.0",
     "next": "12.3.1",
     "react": "18.2.0",
@@ -28,7 +26,6 @@
   "devDependencies": {
     "@prisma/client": "^4.5.0",
     "@tailwindcss/forms": "^0.5.3",
-    "@types/lodash": "^4.14.186",
     "@types/node": "18.11.4",
     "@types/react": "18.0.22",
     "@types/react-dom": "18.0.7",
