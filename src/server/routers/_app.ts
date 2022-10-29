@@ -4,26 +4,22 @@ import { prisma } from '../../db/client';
 export const appRouter = router({
     createShortLink: publicProcedure
         .input(z.object({ url: z.string().url(), slug: z.string() }))
+        //find match url first, if not then create a new one
         .mutation(async ({ input }) => {
             try {
-                const response = await prisma.shortLink.create({
-                    data: { url: input.url, slug: input.slug },
-                });
-                return response;
-            } catch (e) {
-                console.error(e);
-            }
-        }),
-    findShortLinkExist: publicProcedure
-        .input(z.object({ url: z.string().url() }))
-        .query(async ({ input }) => {
-            try {
-                const response = await prisma.shortLink.findFirst({
+                const matched = await prisma.shortLink.findFirst({
                     where: {
                         url: { equals: input.url },
                     },
                 });
-                return response;
+                if (matched) {
+                    return matched;
+                } else {
+                    const response = await prisma.shortLink.create({
+                        data: { url: input.url, slug: input.slug },
+                    });
+                    return response;
+                }
             } catch (e) {
                 console.error(e);
             }

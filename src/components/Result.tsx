@@ -2,10 +2,10 @@ import React from 'react';
 import copy from 'copy-to-clipboard';
 type Props = {
     shortLink: string | undefined;
-    longUrl: string;
+    longUrl: string | undefined;
 };
 
-export const ShortLinkDisplay = ({ shortLink }: Props) => {
+export const Result = ({ shortLink, longUrl }: Props) => {
     // TODO: Update method so this app can still work if we deploy on other platform rather than VERCEl
     // ! After deploy, it might only display the short link after submit if this app is deploy on VERCEL, because the env will work due to Vercel set up.
     const url = process.env.VERCEL_URL
@@ -26,6 +26,10 @@ export const ShortLinkDisplay = ({ shortLink }: Props) => {
             >
                 {url}
             </a>
+            <h2 className="text-xl">Original Link:</h2>
+            <div className="p-2 text-base font-bold tracking-wider opacity-50 ring-2 ring-fuchsia-700 md:text-lg">
+                {longUrl}
+            </div>
             <button
                 className="w-32 rounded-lg bg-fuchsia-500 p-2 font-bold text-stone-800"
                 onClick={() => copy(url)}
