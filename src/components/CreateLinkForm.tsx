@@ -7,14 +7,10 @@ import { ShortLinkDisplay } from './ShortLinkDisplay';
 
 export const inputType = z.string().url();
 
-type From = {
-    url: z.infer<typeof inputType>;
-    slug: string;
-};
-
 export const CreateLinkForm = () => {
-    const [input, setInput] = useState('');
-    const [shortLink, setShortLink] = useState('');
+    const [input, setInput] = useState<z.infer<typeof inputType>>('');
+    const [shortLink, setShortLink] = useState<string>('');
+
     const createShortLink = trpc.createShortLink.useMutation();
 
     //We have to use enabled: false and other options because this query is base in the input.url. If we enable it by default, every time a user type a character in the input the component render and this query will automatically refetch and will cause error because the input might not be an valid url.
@@ -89,7 +85,18 @@ export const CreateLinkForm = () => {
                     {createShortLink.isLoading && <LoadingButton />}
                 </form>
                 <Suspense fallback={<div>Loading...</div>}>
-                    <ShortLinkDisplay longUrl={input} shortLink={shortLink} />
+                    <div
+                        className={`${
+                            (findShortLink.isFetching ||
+                                createShortLink.isLoading) &&
+                            `hidden`
+                        }`}
+                    >
+                        <ShortLinkDisplay
+                            longUrl={input}
+                            shortLink={shortLink}
+                        />
+                    </div>
                 </Suspense>
             </div>
         </main>
