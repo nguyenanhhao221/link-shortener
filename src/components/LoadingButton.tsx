@@ -3,7 +3,7 @@ import React from 'react';
 type Props = {
     className?: string;
 };
-export const LoadingButton = ({ className }: Props) => {
+export const LoadingButton = ({}: Props) => {
     return (
         <button
             className="cursor-wait rounded-lg bg-fuchsia-500 p-2 font-bold text-stone-800"

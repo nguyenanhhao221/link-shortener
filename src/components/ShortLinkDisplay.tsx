@@ -2,6 +2,7 @@ import React from 'react';
 import copy from 'copy-to-clipboard';
 type Props = {
     shortLink: string | undefined;
+    longUrl: string;
 };
 
 export const ShortLinkDisplay = ({ shortLink }: Props) => {
@@ -12,6 +13,8 @@ export const ShortLinkDisplay = ({ shortLink }: Props) => {
         : `http://localhost:${process.env.PORT || 3000}/${shortLink}`;
 
     if (!shortLink) return <></>;
+    //Query to Find if that long url already exist in database, if it does we will return the short url that already created before.
+
     return (
         <div className="flex flex-col items-center gap-4 text-center text-white">
             <h2 className="text-xl">Shorten Link:</h2>
@@ -19,16 +22,17 @@ export const ShortLinkDisplay = ({ shortLink }: Props) => {
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2 text-lg font-bold ring-2 ring-fuchsia-700"
+                className="p-2 text-base font-bold tracking-wider ring-2 ring-fuchsia-700 md:text-lg"
             >
                 {url}
             </a>
             <button
-                className="w-32 rounded-lg bg-fuchsia-500 p-2 text-stone-800"
+                className="w-32 rounded-lg bg-fuchsia-500 p-2 font-bold text-stone-800"
                 onClick={() => copy(url)}
                 type="button"
+                title="Copy Link"
             >
-                Copy
+                Copy Link
             </button>
         </div>
     );

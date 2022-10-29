@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from 'react';
+import React, { Suspense, useCallback, useState } from 'react';
 import { z } from 'zod';
 import { getRandom } from '../utils/helper';
 import { trpc } from '../utils/trpc';
@@ -16,10 +16,28 @@ export const CreateLinkForm = () => {
     const [input, setInput] = useState<From>({ url: '', slug: '' });
     const createShortLink = trpc.createShortLink.useMutation();
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    //We have to use enabled: false and other options because this query is base in the input.url. If we enable it by default, every time a user type a character in the input the component render and this query will automatically refetch and will cause error because the input might not be an valid url.
+    const findShortLink = trpc.findShortLinkExist.useQuery(
+        {
+            url: input.url,
+        },
+        {
+            refetchOnWindowFocus: false,
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            enabled: false,
+        }
+    );
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const inputValue = inputType.parse(input.url);
         if (inputValue) {
+            const { data, isSuccess } = await findShortLink.refetch();
+            if (isSuccess && data?.slug) {
+                return setInput({ ...input, slug: data?.slug });
+            }
+
             const randomSlug = getRandom();
             return createShortLink.mutate({
                 ...input,
@@ -41,20 +59,21 @@ export const CreateLinkForm = () => {
                     onSubmit={(e) => handleSubmit(e)}
                 >
                     <input
-                        className="form-input w-full rounded-lg"
+                        className="autofocus form-input w-full rounded-lg"
                         placeholder="Enter Link"
                         ref={urlInput}
+                        type="url"
                         value={input.url}
-                        onChange={(e) =>
-                            setInput({ ...input, url: e.target.value })
-                        }
+                        onChange={(e) => {
+                            return setInput({ ...input, url: e.target.value });
+                        }}
                         required
                     ></input>
                     <input
                         type="submit"
-                        value="Get Short Link"
-                        title="Get Short Link"
-                        className={`cursor-pointer rounded-lg bg-fuchsia-500 p-2 font-bold text-stone-800 disabled:cursor-not-allowed disabled:opacity-75 ${
+                        value="Shorten Link"
+                        title="Shorten Link"
+                        className={`cursor-pointer rounded-lg bg-fuchsia-500 p-2 font-bold text-stone-800 disabled:cursor-not-allowed disabled:bg-fuchsia-800 disabled:opacity-75 ${
                             createShortLink.isLoading && `hidden`
                         }`}
                         disabled={
@@ -65,10 +84,11 @@ export const CreateLinkForm = () => {
                 </form>
                 <Suspense fallback={<div>Loading...</div>}>
                     <ShortLinkDisplay
+                        longUrl={input.url}
                         shortLink={
                             createShortLink.data?.slug
                                 ? createShortLink.data.slug
-                                : undefined
+                                : input.slug
                         }
                     />
                 </Suspense>

@@ -9,6 +9,7 @@ specifiers:
   '@trpc/next': 10.0.0-proxy-beta.26
   '@trpc/react-query': 10.0.0-proxy-beta.26
   '@trpc/server': 10.0.0-proxy-beta.26
+  '@types/lodash': ^4.14.186
   '@types/node': 18.11.4
   '@types/react': 18.0.22
   '@types/react-dom': 18.0.7
@@ -19,6 +20,7 @@ specifiers:
   eslint: 8.26.0
   eslint-config-next: 12.3.1
   eslint-config-prettier: ^8.5.0
+  lodash: ^4.17.21
   nanoid: ^4.0.0
   next: 12.3.1
   postcss: ^8.4.18
@@ -39,6 +41,7 @@ dependencies:
   '@trpc/react-query': 10.0.0-proxy-beta.26_ejrnvvywf3addmfe3uhnjqcfja
   '@trpc/server': 10.0.0-proxy-beta.26
   copy-to-clipboard: 3.3.2
+  lodash: 4.17.21
   nanoid: 4.0.0
   next: 12.3.1_biqbaboplfbrettd7655fr4n2y
   react: 18.2.0
@@ -48,6 +51,7 @@ dependencies:
 devDependencies:
   '@prisma/client': 4.5.0_prisma@4.5.0
   '@tailwindcss/forms': 0.5.3_tailwindcss@3.2.1
+  '@types/lodash': 4.14.186
   '@types/node': 18.11.4
   '@types/react': 18.0.22
   '@types/react-dom': 18.0.7
@@ -407,6 +411,10 @@ packages:
 
   /@types/json5/0.0.29:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
+    dev: true
+
+  /@types/lodash/4.14.186:
+    resolution: {integrity: sha512-eHcVlLXP0c2FlMPm56ITode2AgLMSa6aJ05JTTbYbI+7EMkCEE5qk2E41d5g2lCVTqRe0GnnRFurmlCsDODrPw==}
     dev: true
 
   /@types/node/18.11.4:
@@ -1723,6 +1731,10 @@ packages:
   /lodash.merge/4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
     dev: true
+
+  /lodash/4.17.21:
+    resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
+    dev: false
 
   /loose-envify/1.4.0:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}

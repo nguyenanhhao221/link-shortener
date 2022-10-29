@@ -9,19 +9,25 @@ export const appRouter = router({
                 const response = await prisma.shortLink.create({
                     data: { url: input.url, slug: input.slug },
                 });
-                console.log('🚀 ~ .mutation ~ response', response);
                 return response;
             } catch (e) {
                 console.error(e);
             }
         }),
-    getShotLinks: publicProcedure.query(async () => {
-        try {
-            return await prisma.shortLink.findMany();
-        } catch (e) {
-            console.error(e);
-        }
-    }),
+    findShortLinkExist: publicProcedure
+        .input(z.object({ url: z.string().url() }))
+        .query(async ({ input }) => {
+            try {
+                const response = await prisma.shortLink.findFirst({
+                    where: {
+                        url: { equals: input.url },
+                    },
+                });
+                return response;
+            } catch (e) {
+                console.error(e);
+            }
+        }),
 });
 // export type definition of API
 export type AppRouter = typeof appRouter;
