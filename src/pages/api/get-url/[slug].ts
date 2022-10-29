@@ -1,12 +1,9 @@
 import { NextApiHandler } from 'next';
 
-import { prisma } from '../../db/client';
+import { prisma } from '../../../db/client';
 
 const handler: NextApiHandler = async (req, res) => {
-    console.log('🚀 ~ consthandler:NextApiHandler= ~ req', req);
     const { slug } = req.query;
-    console.log('🚀 ~ consthandler:NextApiHandler= ~ slug', slug);
-
     if (!slug || typeof slug !== 'string') {
         return res.status(404).json({ message: 'Please use link with slug' });
     }
