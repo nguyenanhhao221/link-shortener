@@ -8,8 +8,8 @@ type Props = {
 export const Result = ({ shortLink, longUrl }: Props) => {
     // TODO: Update method so this app can still work if we deploy on other platform rather than VERCEl
     // ! After deploy, it might only display the short link after submit if this app is deploy on VERCEL, because the env will work due to Vercel set up.
-    const url = process.env.VERCEL_URL
-        ? `${process.env.VERCEL_URL}/${shortLink}`
+    const url = process.env.NEXT_PUBLIC_VERCEL_URL
+        ? `${process.env.NEXT_PUBLIC_VERCEL_URL}/${shortLink}`
         : `http://localhost:${process.env.PORT || 3000}/${shortLink}`;
 
     if (!shortLink) return <></>;
