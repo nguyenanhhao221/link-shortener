@@ -3,9 +3,7 @@ import { NextApiHandler } from 'next';
 import { prisma } from '../../db/client';
 
 const handler: NextApiHandler = async (req, res) => {
-    console.log('🚀 ~ consthandler:NextApiHandler= ~ req', req);
     const { slug } = req.query;
-    console.log('🚀 ~ consthandler:NextApiHandler= ~ slug', slug);
 
     if (!slug || typeof slug !== 'string') {
         return res.status(404).json({ message: 'Please use link with slug' });
@@ -18,7 +16,12 @@ const handler: NextApiHandler = async (req, res) => {
         },
     });
     if (!data) return res.status(404).json({ message: 'slug not found' });
-
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader(
+        'Cache-Control',
+        's-maxage=1000000000, stale-while-revalidate'
+    );
     return res.json(data);
 };
 

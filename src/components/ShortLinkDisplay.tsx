@@ -31,6 +31,7 @@ export const ShortLinkDisplay = ({ shortLink }: Props) => {
                 onClick={() => copy(url)}
                 type="button"
                 title="Copy Link"
+                disabled={!url}
             >
                 Copy Link
             </button>

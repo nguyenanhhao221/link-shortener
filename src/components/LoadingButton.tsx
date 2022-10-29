@@ -9,6 +9,7 @@ export const LoadingButton = ({}: Props) => {
             className="cursor-wait rounded-lg bg-fuchsia-500 p-2 font-bold text-stone-800"
             title="Loading"
             type="button"
+            disabled
         >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -16,7 +17,7 @@ export const LoadingButton = ({}: Props) => {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="h-6 w-6 animate-spin"
+                className={`h-6 w-6 animate-spin`}
             >
                 <path
                     strokeLinecap="round"

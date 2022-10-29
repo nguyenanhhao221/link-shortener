@@ -13,13 +13,14 @@ type From = {
 };
 
 export const CreateLinkForm = () => {
-    const [input, setInput] = useState<From>({ url: '', slug: '' });
+    const [input, setInput] = useState('');
+    const [shortLink, setShortLink] = useState('');
     const createShortLink = trpc.createShortLink.useMutation();
 
     //We have to use enabled: false and other options because this query is base in the input.url. If we enable it by default, every time a user type a character in the input the component render and this query will automatically refetch and will cause error because the input might not be an valid url.
     const findShortLink = trpc.findShortLinkExist.useQuery(
         {
-            url: input.url,
+            url: input,
         },
         {
             refetchOnWindowFocus: false,
@@ -31,18 +32,22 @@ export const CreateLinkForm = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const inputValue = inputType.parse(input.url);
+        const inputValue = inputType.parse(input);
         if (inputValue) {
-            const { data, isSuccess } = await findShortLink.refetch();
-            if (isSuccess && data?.slug) {
-                return setInput({ ...input, slug: data?.slug });
+            const response = await findShortLink.refetch();
+
+            if (response.isSuccess && response.data?.slug) {
+                return setShortLink(response.data.slug);
             }
 
             const randomSlug = getRandom();
-            return createShortLink.mutate({
-                ...input,
+            createShortLink.mutate({
+                url: input,
                 slug: randomSlug,
             });
+            if (createShortLink.isSuccess && createShortLink.data) {
+                return setShortLink(createShortLink.data.slug);
+            }
         }
     };
     //useCallback to add focus state to the input when component first mount
@@ -63,9 +68,9 @@ export const CreateLinkForm = () => {
                         placeholder="Enter Link"
                         ref={urlInput}
                         type="url"
-                        value={input.url}
+                        value={input}
                         onChange={(e) => {
-                            return setInput({ ...input, url: e.target.value });
+                            return setInput(e.target.value);
                         }}
                         required
                     ></input>
@@ -74,23 +79,17 @@ export const CreateLinkForm = () => {
                         value="Shorten Link"
                         title="Shorten Link"
                         className={`cursor-pointer rounded-lg bg-fuchsia-500 p-2 font-bold text-stone-800 disabled:cursor-not-allowed disabled:bg-fuchsia-800 disabled:opacity-75 ${
-                            createShortLink.isLoading && `hidden`
-                        }`}
+                            findShortLink.isFetching && `hidden`
+                        } ${createShortLink.isLoading && `hidden`}`}
                         disabled={
-                            input.url.length === 0 || createShortLink.isLoading
+                            input.length === 0 || createShortLink.isLoading
                         }
                     />
+                    {findShortLink.isFetching && <LoadingButton />}
                     {createShortLink.isLoading && <LoadingButton />}
                 </form>
                 <Suspense fallback={<div>Loading...</div>}>
-                    <ShortLinkDisplay
-                        longUrl={input.url}
-                        shortLink={
-                            createShortLink.data?.slug
-                                ? createShortLink.data.slug
-                                : input.slug
-                        }
-                    />
+                    <ShortLinkDisplay longUrl={input} shortLink={shortLink} />
                 </Suspense>
             </div>
         </main>

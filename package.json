@@ -16,6 +16,7 @@
     "@trpc/next": "10.0.0-proxy-beta.26",
     "@trpc/react-query": "10.0.0-proxy-beta.26",
     "@trpc/server": "10.0.0-proxy-beta.26",
+    "axios": "^1.1.3",
     "copy-to-clipboard": "^3.3.2",
     "lodash": "^4.17.21",
     "nanoid": "^4.0.0",
