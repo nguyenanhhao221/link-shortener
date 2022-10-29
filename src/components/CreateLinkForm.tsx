@@ -62,7 +62,11 @@ export const CreateLinkForm = () => {
                     {createShortLink.isLoading && <LoadingButton />}
                 </form>
                 <Suspense fallback={<div>Loading...</div>}>
-                    <div className={`${createShortLink.isLoading && `hidden`}`}>
+                    <div
+                        className={`${
+                            createShortLink.isLoading ? `hidden` : ``
+                        }`}
+                    >
                         <Result
                             longUrl={createShortLink.data?.url}
                             shortLink={createShortLink.data?.slug}
