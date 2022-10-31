@@ -26,7 +26,7 @@ export const Result = ({ shortLink, longUrl }: Props) => {
                 {url}
             </a>
             <button
-                className="w-32 rounded-lg bg-fuchsia-500 p-2 font-bold text-stone-800"
+                className="w-32 cursor-copy rounded-lg bg-fuchsia-500 p-2 font-bold text-stone-800"
                 onClick={() => copy(url)}
                 type="button"
                 title="Copy"
