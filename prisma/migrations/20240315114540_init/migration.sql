@@ -1,4 +1,4 @@
--- CreateDatabase
+-- CreateSchema
 CREATE SCHEMA IF NOT EXISTS linkshort;
 
 -- CreateTable
