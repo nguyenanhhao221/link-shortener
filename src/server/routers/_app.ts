@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { publicProcedure, router } from '../trpc';
 import { prisma } from '../../db/client';
+
 export const appRouter = router({
     createShortLink: publicProcedure
         .input(z.object({ url: z.string().url(), slug: z.string() }))
