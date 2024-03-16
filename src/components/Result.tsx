@@ -1,5 +1,6 @@
 import React from 'react';
 import copy from 'copy-to-clipboard';
+
 type Props = {
     shortLink: string | undefined;
     longUrl: string | undefined;
