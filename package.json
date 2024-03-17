@@ -8,7 +8,8 @@
     "format": "prettier --config ./prettier.config.js --write './src/**/*.{js,jsx,ts,tsx}'",
     "format:check": "prettier --config ./prettier.config.js --check './src/**/*.{js,jsx,ts,tsx}'",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@tanstack/react-query": "^4.13.0",
