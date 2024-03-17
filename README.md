@@ -5,9 +5,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 First, run the development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
+pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
@@ -18,17 +16,25 @@ You can start editing the page by modifying `pages/index.tsx`. The page auto-upd
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-## Learn More
+You will need a Postgres SQL database for the app to function. You can run an example one with the `docker-compose.yaml` file
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+docker-compose -f docker-compose.yaml up
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+After setting up the local postgres, we will need to run `prisma migrate` to apply the migration and necessary tables
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```bash
+pnpm install --frozen-lockfile
+pnpm exec prisma migrate deploy
+```
+Provide the credential to connect to the database via the `.env` file. Check out the `.env.example`
 
-## Deploy on Vercel
+## Deploy
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This app is deployed on Vercel with the Database using PostgresSQL deployed on Railway.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Note for myself in the future
+Hey future me, this app is a fun side project and I'm too lazy to implement the best way to handle production, preview Postgres, so there only 1 production Postgres on Railway. 
+Which also mean that you (me) must replace the database connection to this Railway connection and manually apply prisma migration to it whenever there are changes to the database.
+I know, I know this is not the best way. But you know we are too lazy to apply all the necessary CI/CD with these different provider

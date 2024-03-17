@@ -1,0 +1,8 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:16.2
+    environment:
+          POSTGRES_DB: rd-datamimic
+          POSTGRES_USER: rdadm
+          POSTGRES_PASSWORD: rdtest!
