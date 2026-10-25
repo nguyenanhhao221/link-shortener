@@ -16,25 +16,21 @@ You can start editing the page by modifying `pages/index.tsx`. The page auto-upd
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-You will need a Postgres SQL database for the app to function. You can run an example one with the `docker-compose.yaml` file
+You will need a PostgreSQL database for the app to function. Set `DATABASE_URL` in `.env` using `.env.example` as a template. You can run an example database with the `docker-compose.yaml` file.
 
 ```bash
 docker-compose -f docker-compose.yaml up
 ```
 
-After setting up the local postgres, we will need to run `prisma migrate` to apply the migration and necessary tables
+After setting up the local PostgreSQL database, apply the migration and create the required tables:
 
 ```bash
 pnpm install --frozen-lockfile
 pnpm exec prisma migrate deploy
 ```
-Provide the credential to connect to the database via the `.env` file. Check out the `.env.example`
 
 ## Deploy
 
-This app is deployed on Vercel with the Database using PostgresSQL deployed on Railway.
+This app is deployed on Vercel with PostgreSQL hosted on Neon. Vercel runs the `vercel-build` script, which applies pending Prisma migrations before building the app. Make sure `DATABASE_URL` is configured for the Vercel environment being deployed.
 
-## Note for myself in the future
-Hey future me, this app is a fun side project and I'm too lazy to implement the best way to handle production, preview Postgres, so there only 1 production Postgres on Railway. 
-Which also mean that you (me) must replace the database connection to this Railway connection and manually apply prisma migration to it whenever there are changes to the database.
-I know, I know this is not the best way. But you know we are too lazy to apply all the necessary CI/CD with these different provider
+Changing `DATABASE_URL` only points the app at a different database; it does not copy data from the old database. Run the migration once against the new database, then migrate any required application data separately.
